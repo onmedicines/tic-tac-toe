@@ -30,6 +30,7 @@
 
   display: grid;
   grid-template-columns: repeat(3, calc(100% / 3));
+  grid-template-rows: repeat(3, calc(100% / 3));
 }
 .cell {
   border: 1px solid;
