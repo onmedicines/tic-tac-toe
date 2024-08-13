@@ -4,7 +4,7 @@ TO DO
 */
 
 const Player = (function () {
-  // Private
+  // PRIVATE
   function createPlayer(marker) {
     let moves = []; // stores all the indexes at which the player places his/her marker
 
@@ -21,6 +21,7 @@ const Player = (function () {
     return { get, updateMoves, resetPlayerMoves };
   }
 
+  // PUBLIC
   const playerX = createPlayer("X");
   const playerO = createPlayer("O");
 
@@ -39,6 +40,7 @@ const Player = (function () {
 })();
 
 const Board = (function (doc) {
+  // PRIVATE
   //  Winning combinations on the board
   const winnningCombinations = [
     [0, 1, 2],
@@ -50,15 +52,11 @@ const Board = (function (doc) {
     [0, 4, 8],
     [2, 4, 6],
   ];
-
   // DOM elements
   const message = doc.querySelector(".message");
   const startButton = doc.querySelector("#start-button");
-
   // contains the info about which cell on the board has which marker
   const boardStatus = new Array(9);
-
-  // Private functions
   function registerMove(cellID, currPlayer) {
     boardStatus[cellID] = currPlayer.get().marker;
     currPlayer.updateMoves(cellID);
@@ -91,7 +89,6 @@ const Board = (function (doc) {
       message.textContent = `It's a tie`;
     }
   }
-
   function handleClick(e) {
     registerMove(Number(e.target.id), currentPlayer);
     renderBoard();
@@ -122,7 +119,7 @@ const Board = (function (doc) {
     });
   }
 
-  // Public functions
+  // PUBLIC
   function init() {
     addEventsToBoardCells();
     startButton.textContent = "Restart Game";
