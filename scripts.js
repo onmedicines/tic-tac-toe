@@ -157,3 +157,8 @@ const startButton = document.querySelector("#start-button");
 startButton.addEventListener("click", (e) => {
   GameController.startGame();
 });
+
+const toggleThemeButton = document.querySelector("#toggle-theme");
+toggleThemeButton.addEventListener("click", () => {
+  document.querySelector(".wrapper").classList.toggle("dark-theme");
+});
