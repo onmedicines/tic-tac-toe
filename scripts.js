@@ -37,7 +37,7 @@ const Player = (function () {
 })();
 
 const Board = (function (doc) {
-  //  Winning combinations in a tic tac toe game
+  //  Winning combinations on the board
   const winnningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -48,6 +48,7 @@ const Board = (function (doc) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+  const message = doc.querySelector(".message");
 
   // contains the info about which cell on the board has which marker
   const boardStatus = new Array(9).fill("");
@@ -68,12 +69,12 @@ const Board = (function (doc) {
     return winnningCombinations.some((combination) => combination.every((index) => currPlayer.get().moves.includes(index)));
   }
   function nextPlayer(currPlayer) {
-    return currPlayer.get().marker === Player.playerX.get().marker ? Player.playerO : Player.playerX;
+    currPlayer = currPlayer.get().marker === Player.playerX.get().marker ? Player.playerO : Player.playerX;
+    message.textContent = `Turn: Player ${currPlayer.get().marker}`;
+    return currPlayer;
   }
   function displayWinner(winner) {
-    const heading = doc.querySelector(".heading-container > h1");
-    heading.textContent = `The winner is Player ${winner.get().marker}`;
-
+    message.textContent = `The winner is Player ${winner.get().marker}`;
     resetBoard();
   }
 
@@ -93,7 +94,7 @@ const Board = (function (doc) {
     });
   }
   function removeEventsFromBoardCells() {
-    let cells = doc.querySelector(".cell");
+    let cells = doc.querySelectorAll(".cell");
     cells.forEach((cell) => {
       cell.removeEventListener("click", handleClick);
     });
@@ -114,24 +115,15 @@ const Board = (function (doc) {
 })(document);
 
 const GameController = (function (doc) {
-  /*
-
-  choose Marker X or O
-  create player with the marker
-  create a second player for computer with the opposite marker
-   
-
-  generate board and add eventListeners to the button/divs 
-  check for winner after each turn
-  on winning, display the winner
-
-  */
-
   function startGame() {
+    // Board.resetBoard();
     Board.init();
   }
 
   return { startGame };
 })(document);
 
-GameController.startGame();
+const startButton = document.querySelector("#start");
+startButton.addEventListener("click", (e) => {
+  GameController.startGame();
+});
