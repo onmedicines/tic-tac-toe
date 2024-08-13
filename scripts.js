@@ -48,12 +48,13 @@ const Board = (function (doc) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
+  // DOM elements
   const message = doc.querySelector(".message");
+  const startButton = doc.querySelector("#start");
 
   // contains the info about which cell on the board has which marker
-  const boardStatus = new Array(9).fill("");
-  // player X is always the first player
-  let currentPlayer = Player.playerX;
+  const boardStatus = new Array(9);
 
   // Private functions
   function registerMove(cellID, currPlayer) {
@@ -76,7 +77,7 @@ const Board = (function (doc) {
   }
   function displayWinner(winner) {
     message.textContent = `The winner is Player ${winner.get().marker}`;
-    reset();
+    removeEventsFromBoardCells();
   }
 
   function handleClick(e) {
@@ -108,14 +109,35 @@ const Board = (function (doc) {
   // Public functions
   function init() {
     addEventsToBoardCells();
+    startButton.textContent = "Restart Game";
   }
 
   function reset() {
+    // prerequisites to start game
+    // these are such because this method is also used for initializing the game
+    // when it starts for the first time
+    // and also for restting the game each time after
+
+    // initializes all the array positions with empty string
     boardStatus.fill("");
+
+    // intialise player moves with an empty array
     Player.playerX.resetPlayerMoves();
     Player.playerO.resetPlayerMoves();
+
+    // make X the first player
     currentPlayer = Player.playerX;
+
+    // paint board on screen
     renderBoard();
+
+    // set text of start-button once the game ends
+    startButton.textContent = "Start Game";
+
+    // set the text of message to an empty string before each new game
+    message.textContent = `Player ${currentPlayer.get().marker} goes first.`;
+
+    // remove previous event listeners if present
     removeEventsFromBoardCells();
   }
 
@@ -124,10 +146,8 @@ const Board = (function (doc) {
 
 const GameController = (function (doc) {
   function startGame() {
+    Board.reset();
     Board.init();
-  }
-  function restartGame() {
-    Board.resetBoard();
   }
 
   return { startGame };
