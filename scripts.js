@@ -160,5 +160,13 @@ startButton.addEventListener("click", (e) => {
 
 const toggleThemeButton = document.querySelector("#toggle-theme");
 toggleThemeButton.addEventListener("click", () => {
+  const currentIcon = document.querySelector("#toggle-theme i");
   document.querySelector(".wrapper").classList.toggle("dark-theme");
+  if (currentIcon.classList.contains("fa-moon")) {
+    currentIcon.classList.remove("fa-moon");
+    currentIcon.classList.add("fa-sun");
+  } else {
+    currentIcon.classList.remove("fa-sun");
+    currentIcon.classList.add("fa-moon");
+  }
 });
