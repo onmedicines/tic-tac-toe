@@ -1,6 +1,6 @@
 /*
 TO DO
-- Remove the cell divs from html and render them using javascript 
+- Remove the cell divs from html and render them using javascript
 */
 
 const Player = (function () {
@@ -52,6 +52,7 @@ const Board = (function (doc) {
 
   // contains the info about which cell on the board has which marker
   const boardStatus = new Array(9).fill("");
+  // player X is always the first player
   let currentPlayer = Player.playerX;
 
   // Private functions
@@ -75,7 +76,7 @@ const Board = (function (doc) {
   }
   function displayWinner(winner) {
     message.textContent = `The winner is Player ${winner.get().marker}`;
-    resetBoard();
+    reset();
   }
 
   function handleClick(e) {
@@ -88,12 +89,16 @@ const Board = (function (doc) {
     }
   }
   function addEventsToBoardCells() {
+    console.log("events added"); // logs
+
     let cells = doc.querySelectorAll(".cell");
     cells.forEach((cell) => {
       cell.addEventListener("click", handleClick);
     });
   }
   function removeEventsFromBoardCells() {
+    console.log("events removed"); // logs
+
     let cells = doc.querySelectorAll(".cell");
     cells.forEach((cell) => {
       cell.removeEventListener("click", handleClick);
@@ -105,19 +110,24 @@ const Board = (function (doc) {
     addEventsToBoardCells();
   }
 
-  function resetBoard() {
+  function reset() {
     boardStatus.fill("");
+    Player.playerX.resetPlayerMoves();
+    Player.playerO.resetPlayerMoves();
+    currentPlayer = Player.playerX;
     renderBoard();
     removeEventsFromBoardCells();
   }
 
-  return { init, resetBoard };
+  return { init, reset };
 })(document);
 
 const GameController = (function (doc) {
   function startGame() {
-    // Board.resetBoard();
     Board.init();
+  }
+  function restartGame() {
+    Board.resetBoard();
   }
 
   return { startGame };
