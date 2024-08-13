@@ -51,7 +51,7 @@ const Board = (function (doc) {
 
   // DOM elements
   const message = doc.querySelector(".message");
-  const startButton = doc.querySelector("#start");
+  const startButton = doc.querySelector("#start-button");
 
   // contains the info about which cell on the board has which marker
   const boardStatus = new Array(9);
@@ -153,7 +153,7 @@ const GameController = (function (doc) {
   return { startGame };
 })(document);
 
-const startButton = document.querySelector("#start");
+const startButton = document.querySelector("#start-button");
 startButton.addEventListener("click", (e) => {
   GameController.startGame();
 });
