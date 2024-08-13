@@ -25,12 +25,14 @@ const Player = (function () {
   const playerO = createPlayer("O");
 
   /**
+   * -- Random JS concepts --
+   *
    * const { getPlayer: getPlayerX, updatePlayerMoves: updatePlayerMovesX } = createPlayer("X");
    * const { getPlayer: getPlayerO, updatePlayerMoves: updatePlayerMovesO } = createPlayer("O");
    *
    * the above statements take the value of getPlayer from the object returned by createPlayer()
    * and then store it inside getPlayerX and getPlayerO respectively
-   * this is called reverse destructuring
+   * this is called REVERSE DESTRUCTURING
    */
 
   return { playerX, playerO };
@@ -70,21 +72,35 @@ const Board = (function (doc) {
   function isWinner(currPlayer) {
     return winnningCombinations.some((combination) => combination.every((index) => currPlayer.get().moves.includes(index)));
   }
+  function isDraw() {
+    if (boardStatus.some((element) => element === "")) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   function nextPlayer(currPlayer) {
     currPlayer = currPlayer.get().marker === Player.playerX.get().marker ? Player.playerO : Player.playerX;
     message.textContent = `Turn: Player ${currPlayer.get().marker}`;
     return currPlayer;
   }
-  function displayWinner(winner) {
-    message.textContent = `The winner is Player ${winner.get().marker}`;
-    removeEventsFromBoardCells();
+  function displayMessage(winner = "") {
+    if (winner) {
+      message.textContent = `The winner is Player ${winner.get().marker}`;
+    } else {
+      message.textContent = `It's a tie`;
+    }
   }
 
   function handleClick(e) {
     registerMove(Number(e.target.id), currentPlayer);
     renderBoard();
     if (isWinner(currentPlayer)) {
-      displayWinner(currentPlayer);
+      displayMessage(currentPlayer);
+      removeEventsFromBoardCells();
+    } else if (isDraw()) {
+      displayMessage();
+      removeEventsFromBoardCells();
     } else {
       currentPlayer = nextPlayer(currentPlayer);
     }
