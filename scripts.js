@@ -90,8 +90,16 @@ const Board = (function (doc) {
     }
   }
   function handleClick(e) {
+    // register move in boardStatus[] and player.moves[]
     registerMove(Number(e.target.id), currentPlayer);
+
+    // render board with newly ubdated boardStatus[]
     renderBoard();
+
+    // remove click event from the clicked cell to prevent overwrite
+    removeEventFromCurrentCell(e.target);
+
+    // check for winner/draw else update current player and move on with the game
     if (isWinner(currentPlayer)) {
       displayMessage(currentPlayer);
       removeEventsFromBoardCells();
@@ -103,8 +111,6 @@ const Board = (function (doc) {
     }
   }
   function addEventsToBoardCells() {
-    console.log("events added"); // logs
-
     let cells = doc.querySelectorAll(".cell");
     cells.forEach((cell) => {
       cell.addEventListener("click", handleClick);
@@ -116,7 +122,9 @@ const Board = (function (doc) {
       cell.removeEventListener("click", handleClick);
     });
   }
-  function removeEvenetFromCurrentCell(currentCell) {}
+  function removeEventFromCurrentCell(currentCell) {
+    currentCell.removeEventListener("click", handleClick);
+  }
 
   // PUBLIC
   function init() {
