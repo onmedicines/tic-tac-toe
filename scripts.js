@@ -111,13 +111,12 @@ const Board = (function (doc) {
     });
   }
   function removeEventsFromBoardCells() {
-    console.log("events removed"); // logs
-
     let cells = doc.querySelectorAll(".cell");
     cells.forEach((cell) => {
       cell.removeEventListener("click", handleClick);
     });
   }
+  function removeEvenetFromCurrentCell(currentCell) {}
 
   // PUBLIC
   function init() {
